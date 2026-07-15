@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TechAgenda</title>
+    
+    <!-- Manifesto embutido em Data URI para permitir reconhecimento de PWA básico -->
+    <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22TechAgenda%20PWA%22%2C%22short_name%22%3A%22TechAgenda%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230d1117%22%2C%22theme_color%22%3A%22%230d1117%22%7D">
+
+    <!-- Bibliotecas Externas -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <style>
+        /* ================= CSS (Design Tecnológico) ================= */
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: #161b22;
+            --text-main: #c9d1d9;
+            --accent: #58a6ff;
+            --accent-hover: #1f6feb;
+            --border-color: #30363d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 20px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: var(--panel-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-tech {
+            background-color: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.4);
+        }
+
+        .btn-tech:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 0 15px rgba(88, 166, 255, 0.7);
+        }
+
+        .btn-tech.outline {
+            background-color: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            display: inline-block;
+            margin-bottom: 15px;
+            box-shadow: none;
+        }
+
+        .btn-tech.outline:hover {
+            background-color: rgba(88, 166, 255, 0.1);
+        }
+
+        #calendario-container, .modulo-imagens {
+            padding: 20px;
+            background-color: var(--panel-bg);
+            margin: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Customização do Calendário para o tema escuro */
+        .fc { color: var(--text-main); }
+        .fc-theme-standard td, .fc-theme-standard th, .fc-theme-standard .fc-scrollgrid {
+            border-color: var(--border-color);
+        }
+        .fc-button-primary {
+            background-color: var(--accent) !important;
+            border-color: var(--accent) !important;
+        }
+        .fc-button-primary:hover {
+            background-color: var(--accent-hover) !important;
+        }
+
+        .modulo-imagens h2 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        input[type="file"] { display: none; }
+
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .galeria img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s;
+        }
+
+        .galeria img:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <h1>TechAgenda</h1>
+        <button id="btn-gerar-pdf" class="btn-tech">Gerar PDF</button>
+    </header>
+
+    <main id="relatorio-pdf">
+        <section id="calendario-container">
+            <div id="calendar"></div>
+        </section>
+
+        <section class="modulo-imagens">
+            <h2>Cofre de Imagens (Local)</h2>
+            <div class="upload-area">
+                <input type="file" id="upload-imagem" accept="image/*">
+                <label for="upload-imagem" class="btn-tech outline">➕ Adicionar Imagem</label>
+            </div>
+            <div id="galeria-imagens" class="galeria"></div>
+        </section>
+    </main>
+
+    <script>
+        /* ================= JavaScript (Lógica e Funcionalidades) ================= */
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. Configuração do Calendário Tecnológico
+            var calendarEl = document.getElementById('calendar');
+            
+            // Recupera eventos salvos no cache do navegador
+            let eventosSalvos = JSON.parse(localStorage.getItem('techagenda_eventos')) || [];
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridDay', // Visão diária
+                headerToolbar: {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridDay'
+                },
+                locale: 'pt-br',
+                events: eventosSalvos,
+                selectable: true,
+                height: 500,
+                select: function(info) {
+                    let titulo = prompt('Qual a nova programação para este horário?');
+                    if (titulo) {
+                        let novoEvento = {
+                            title: titulo,
+                            start: info.startStr,
+                            end: info.endStr,
+                            backgroundColor: '#58a6ff',
+                            borderColor: '#1f6feb'
+                        };
+                        calendar.addEvent(novoEvento);
+                        eventosSalvos.push(novoEvento);
+                        localStorage.setItem('techagenda_eventos', JSON.stringify(eventosSalvos));
+                    }
+                    calendar.unselect();
+                },
+                eventClick: function(info) {
+                    if (confirm(`Deseja excluir o evento: '${info.event.title}'?`)) {
+                        info.event.remove();
+                        eventosSalvos = eventosSalvos.filter(e => 
+                            e.start !== info.event.startStr || e.title !== info.event.title
+                        );
+                        localStorage.setItem('techagenda_eventos', JSON.stringify(eventosSalvos));
+                    }
+                }
+            });
+            calendar.render();
+
+            // 2. Sistema de Imagens (Salvar em Base64 no LocalStorage)
+            const uploadInput = document.getElementById('upload-imagem');
+            const galeria = document.getElementById('galeria-imagens');
+            
+            let imagensSalvas = JSON.parse(localStorage.getItem('techagenda_imagens')) || [];
+            
+            function renderizarGaleria() {
+                galeria.innerHTML = '';
+                imagensSalvas.forEach((src, index) => {
+                    let img = document.createElement('img');
+                    img.src = src;
+                    img.title = "Clique duplo para deletar";
+                    img.ondblclick = () => deletarImagem(index);
+                    galeria.appendChild(img);
+                });
+            }
+            renderizarGaleria();
+
+            function deletarImagem(index) {
+                if(confirm("Deseja deletar esta imagem?")) {
+                    imagensSalvas.splice(index, 1);
+                    localStorage.setItem('techagenda_imagens', JSON.stringify(imagensSalvas));
+                    renderizarGaleria();
+                }
+            }
+
+            uploadInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(evento) {
+                        const base64Img = evento.target.result;
+                        imagensSalvas.push(base64Img);
+                        // Limite para evitar erro de cota excedida no navegador (aprox 5mb)
+                        if(imagensSalvas.length > 8) imagensSalvas.shift(); 
+                        localStorage.setItem('techagenda_imagens', JSON.stringify(imagensSalvas));
+                        renderizarGaleria();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // 3. Geração de PDF com layout ajustado
+            const btnPdf = document.getElementById('btn-gerar-pdf');
+            btnPdf.addEventListener('click', () => {
+                const elementoParaPdf = document.getElementById('relatorio-pdf');
+                
+                // Opções para garantir fundo escuro e qualidade no PDF
+                const opt = {
+                    margin:       10,
+                    filename:     'TechAgenda_Diaria.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true, backgroundColor: '#0d1117' },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                btnPdf.innerText = "Gerando...";
+                
+                html2pdf().set(opt).from(elementoParaPdf).save().then(() => {
+                    btnPdf.innerText = "Gerar PDF";
+                });
+            });
+        });
+    </script>
+</body>
+</html>
