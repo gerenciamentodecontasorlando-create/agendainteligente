@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agenda Pessoal Pro - Tech Edition</title>
+    <title>Agenda Pro Tech - Complete Edition</title>
     <style>
         :root {
             --primary: #6c5ce7;
@@ -32,7 +32,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -46,6 +46,7 @@
             margin-bottom: 30px;
             border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-align: center;
         }
 
         .header h1 {
@@ -92,6 +93,123 @@
             box-shadow: 0 10px 20px rgba(108, 92, 231, 0.4);
         }
 
+        /* Calendar Styles */
+        .calendar-container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .calendar-nav {
+            background: var(--gradient);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-nav:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+        }
+
+        .calendar-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #a8e6cf, #ffd3b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: bold;
+            color: #a8e6cf;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid transparent;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: #a8e6cf;
+        }
+
+        .calendar-day.today {
+            background: var(--gradient);
+            border-color: #ffd3b6;
+            font-weight: bold;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+        }
+
+        .calendar-day.has-events {
+            border-color: #fdcb6e;
+        }
+
+        .day-number {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .event-dots {
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 3px;
+        }
+
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #fdcb6e;
+        }
+
+        .event-dot.meeting { background: #74b9ff; }
+        .event-dot.personal { background: #a8e6cf; }
+        .event-dot.health { background: #ff7675; }
+        .event-dot.other { background: #dfe6e9; }
+
         /* Cards */
         .card {
             background: var(--glass);
@@ -136,6 +254,11 @@
             outline: none;
             border-color: #a8e6cf;
             box-shadow: 0 0 10px rgba(168, 230, 207, 0.3);
+        }
+
+        select option {
+            background: #2d3436;
+            color: white;
         }
 
         .btn {
@@ -299,6 +422,16 @@
             margin-top: 10px;
         }
 
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 1.8em;
@@ -311,6 +444,15 @@
             
             .grid {
                 grid-template-columns: 1fr;
+            }
+
+            .calendar-day {
+                min-height: 50px;
+                padding: 5px;
+            }
+
+            .day-number {
+                font-size: 0.9em;
             }
         }
 
@@ -327,6 +469,26 @@
         ::-webkit-scrollbar-thumb {
             background: #6c5ce7;
             border-radius: 10px;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #0984e3, #6c5ce7);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 92, 231, 0.4);
         }
     </style>
 </head>
@@ -348,13 +510,26 @@
 
         <!-- Calendar Tab -->
         <div id="calendar-tab" class="tab-content">
-            <div class="card">
-                <h2>📅 Compromissos do Dia</h2>
-                <div class="form-group">
-                    <label>Novo Compromisso</label>
-                    <input type="text" id="eventTitle" placeholder="Título do compromisso">
+            <div class="grid">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="calendar-nav" onclick="previousMonth()">◀</button>
+                        <div class="calendar-title" id="calendarTitle"></div>
+                        <button class="calendar-nav" onclick="nextMonth()">▶</button>
+                    </div>
+                    <div class="calendar-grid" id="calendarDays">
+                        <!-- Calendar will be rendered here -->
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="goToToday()">Hoje</button>
+                    </div>
                 </div>
-                <div class="grid">
+                <div class="card">
+                    <h2>📅 Adicionar Compromisso</h2>
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="eventTitle" placeholder="Título do compromisso">
+                    </div>
                     <div class="form-group">
                         <label>Data</label>
                         <input type="date" id="eventDate">
@@ -363,30 +538,38 @@
                         <label>Hora</label>
                         <input type="time" id="eventTime">
                     </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="eventType">
+                            <option value="meeting">Reunião</option>
+                            <option value="personal">Pessoal</option>
+                            <option value="health">Saúde</option>
+                            <option value="other">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição (opcional)</label>
+                        <textarea id="eventDescription" rows="3" placeholder="Detalhes do compromisso..."></textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="addEvent()">Adicionar Compromisso</button>
+                    
+                    <h3 style="margin-top: 30px;">Compromissos do Dia Selecionado</h3>
+                    <div class="item-list" id="selectedDayEvents">
+                        <p style="text-align: center; opacity: 0.7;">Selecione uma data no calendário</p>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Tipo</label>
-                    <select id="eventType">
-                        <option value="meeting">Reunião</option>
-                        <option value="personal">Pessoal</option>
-                        <option value="health">Saúde</option>
-                        <option value="other">Outro</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" onclick="addEvent()">Adicionar Compromisso</button>
-                <div class="item-list" id="eventsList" style="margin-top: 20px;"></div>
             </div>
         </div>
 
         <!-- Bills Tab -->
         <div id="bills-tab" class="tab-content" style="display:none;">
-            <div class="card">
-                <h2>💰 Gestão de Contas</h2>
-                <div class="form-group">
-                    <label>Descrição da Conta</label>
-                    <input type="text" id="billDescription" placeholder="Ex: Aluguel, Internet, etc.">
-                </div>
-                <div class="grid">
+            <div class="grid">
+                <div class="card">
+                    <h2>💰 Gestão de Contas</h2>
+                    <div class="form-group">
+                        <label>Descrição da Conta</label>
+                        <input type="text" id="billDescription" placeholder="Ex: Aluguel, Internet, etc.">
+                    </div>
                     <div class="form-group">
                         <label>Valor (R$)</label>
                         <input type="number" id="billAmount" step="0.01" placeholder="0.00">
@@ -395,59 +578,64 @@
                         <label>Data de Vencimento</label>
                         <input type="date" id="billDueDate">
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="billRecurring" style="width: auto; margin-right: 10px;">
-                        Conta Recorrente
-                    </label>
-                </div>
-                <div id="recurringOptions" style="display:none;">
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="billRecurring">
+                        <label style="margin: 0;">Conta Recorrente</label>
+                    </div>
+                    <div id="recurringOptions" style="display:none;">
+                        <div class="form-group">
+                            <label>Frequência</label>
+                            <select id="recurringFrequency">
+                                <option value="monthly">Mensal</option>
+                                <option value="weekly">Semanal</option>
+                                <option value="yearly">Anual</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
-                        <label>Frequência</label>
-                        <select id="recurringFrequency">
-                            <option value="monthly">Mensal</option>
-                            <option value="weekly">Semanal</option>
-                            <option value="yearly">Anual</option>
+                        <label>Status</label>
+                        <select id="billStatus">
+                            <option value="pending">Pendente</option>
+                            <option value="paid">Pago</option>
                         </select>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="billStatus">
-                        <option value="pending">Pendente</option>
-                        <option value="paid">Pago</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" onclick="addBill()">Adicionar Conta</button>
-                <button class="btn btn-warning" onclick="generateReceipt()">Gerar Recibo</button>
-                <div class="item-list" id="billsList" style="margin-top: 20px;"></div>
-                
-                <!-- Receipt Modal -->
-                <div id="receiptModal" class="modal">
-                    <div class="modal-content">
-                        <h2>🧾 Recibo Gerado</h2>
-                        <div class="receipt" id="receiptContent"></div>
-                        <button class="btn btn-primary" onclick="printReceipt()">🖨️ Imprimir</button>
-                        <button class="btn btn-danger" onclick="closeModal('receiptModal')">Fechar</button>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="billCategory">
+                            <option value="housing">Moradia</option>
+                            <option value="utilities">Serviços</option>
+                            <option value="food">Alimentação</option>
+                            <option value="transport">Transporte</option>
+                            <option value="health">Saúde</option>
+                            <option value="education">Educação</option>
+                            <option value="leisure">Lazer</option>
+                            <option value="other">Outros</option>
+                        </select>
                     </div>
+                    <button class="btn btn-primary" onclick="addBill()">Adicionar Conta</button>
+                </div>
+                <div class="card">
+                    <h2>📊 Resumo Financeiro</h2>
+                    <div id="financialSummary"></div>
+                    <h3 style="margin-top: 20px;">Todas as Contas</h3>
+                    <div class="item-list" id="billsList"></div>
                 </div>
             </div>
         </div>
 
         <!-- Projects Tab -->
         <div id="projects-tab" class="tab-content" style="display:none;">
-            <div class="card">
-                <h2>🚀 Gestão de Projetos</h2>
-                <div class="form-group">
-                    <label>Nome do Projeto</label>
-                    <input type="text" id="projectName" placeholder="Nome do projeto">
-                </div>
-                <div class="form-group">
-                    <label>Descrição Detalhada</label>
-                    <textarea id="projectDescription" rows="4" placeholder="Descreva seu projeto em detalhes..."></textarea>
-                </div>
-                <div class="grid">
+            <div class="grid">
+                <div class="card">
+                    <h2>🚀 Novo Projeto</h2>
+                    <div class="form-group">
+                        <label>Nome do Projeto</label>
+                        <input type="text" id="projectName" placeholder="Nome do projeto">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição Detalhada</label>
+                        <textarea id="projectDescription" rows="4" placeholder="Descreva seu projeto em detalhes..."></textarea>
+                    </div>
                     <div class="form-group">
                         <label>Data de Início</label>
                         <input type="date" id="projectStart">
@@ -456,56 +644,71 @@
                         <label>Prazo Final</label>
                         <input type="date" id="projectEnd">
                     </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="projectStatus">
+                            <option value="planning">Planejamento</option>
+                            <option value="in_progress">Em Andamento</option>
+                            <option value="completed">Concluído</option>
+                            <option value="on_hold">Pausado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Prioridade</label>
+                        <select id="projectPriority">
+                            <option value="low">Baixa</option>
+                            <option value="medium">Média</option>
+                            <option value="high">Alta</option>
+                            <option value="urgent">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Tarefas (separadas por vírgula)</label>
+                        <input type="text" id="projectTasks" placeholder="Tarefa 1, Tarefa 2, Tarefa 3">
+                    </div>
+                    <button class="btn btn-primary" onclick="addProject()">Adicionar Projeto</button>
                 </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <select id="projectStatus">
-                        <option value="planning">Planejamento</option>
-                        <option value="in_progress">Em Andamento</option>
-                        <option value="completed">Concluído</option>
-                        <option value="on_hold">Pausado</option>
-                    </select>
+                <div class="card">
+                    <h2>📋 Meus Projetos</h2>
+                    <div class="item-list" id="projectsList"></div>
                 </div>
-                <div class="form-group">
-                    <label>Prioridade</label>
-                    <select id="projectPriority">
-                        <option value="low">Baixa</option>
-                        <option value="medium">Média</option>
-                        <option value="high">Alta</option>
-                        <option value="urgent">Urgente</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Tarefas (separadas por vírgula)</label>
-                    <input type="text" id="projectTasks" placeholder="Tarefa 1, Tarefa 2, Tarefa 3">
-                </div>
-                <button class="btn btn-primary" onclick="addProject()">Adicionar Projeto</button>
-                <div class="item-list" id="projectsList" style="margin-top: 20px;"></div>
             </div>
         </div>
 
         <!-- Export Tab -->
         <div id="export-tab" class="tab-content" style="display:none;">
             <div class="card">
-                <h2>📥 Exportar Dados</h2>
-                <p>Exporte sua agenda completa nos formatos abaixo:</p>
-                <div style="margin-top: 20px;">
-                    <button class="btn btn-success" onclick="exportToWord()">📄 Exportar para Word</button>
-                    <button class="btn btn-primary" onclick="exportToPDF()">📕 Exportar para PDF</button>
-                    <button class="btn btn-warning" onclick="backupData()">💾 Backup de Dados</button>
-                    <button class="btn btn-danger" onclick="restoreData()">📂 Restaurar Backup</button>
-                    <input type="file" id="backupFile" style="display:none;" onchange="loadBackup(event)">
+                <h2>📥 Exportar e Fazer Backup</h2>
+                <div style="text-align: center; padding: 30px;">
+                    <button class="btn btn-success" onclick="exportToWord()" style="font-size: 1.2em; padding: 20px 40px;">
+                        📄 Exportar para Word
+                    </button>
+                    <button class="btn btn-primary" onclick="exportToPDF()" style="font-size: 1.2em; padding: 20px 40px;">
+                        📕 Exportar para PDF
+                    </button>
                 </div>
-                <div style="margin-top: 30px;">
-                    <h3>Prévia dos Dados</h3>
-                    <pre id="dataPreview" style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; overflow-x: auto; max-height: 300px;"></pre>
+                
+                <h3>💾 Backup de Dados</h3>
+                <div style="text-align: center; padding: 20px;">
+                    <button class="btn btn-warning" onclick="backupData()">Download Backup (JSON)</button>
+                    <button class="btn btn-danger" onclick="restoreData()">Restaurar Backup</button>
+                    <input type="file" id="backupFile" style="display:none;" onchange="loadBackup(event)" accept=".json">
+                </div>
+                
+                <h3>📱 Instalar como App</h3>
+                <div style="text-align: center; padding: 20px;">
+                    <p>Para instalar no celular:</p>
+                    <ol style="text-align: left; display: inline-block;">
+                        <li>Abra no navegador do celular</li>
+                        <li>Toque no menu (⋮)</li>
+                        <li>Selecione "Adicionar à tela inicial"</li>
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <script>
         // Data Management
@@ -515,11 +718,49 @@
             projects: []
         };
 
+        let currentDate = new Date();
+        let selectedDate = new Date();
+
         // Load data from localStorage
         function loadData() {
             const saved = localStorage.getItem('agendaProData');
             if (saved) {
                 appData = JSON.parse(saved);
+            }
+            // Add sample data if empty
+            if (appData.events.length === 0) {
+                const today = new Date();
+                appData.events = [
+                    {
+                        id: 1,
+                        title: "Reunião de Planejamento",
+                        date: today.toISOString().split('T')[0],
+                        time: "09:00",
+                        type: "meeting",
+                        description: "Reunião semanal de planejamento"
+                    },
+                    {
+                        id: 2,
+                        title: "Academia",
+                        date: today.toISOString().split('T')[0],
+                        time: "18:00",
+                        type: "health",
+                        description: "Treino de musculação"
+                    }
+                ];
+                appData.bills = [
+                    {
+                        id: 1,
+                        description: "Aluguel",
+                        amount: 1500.00,
+                        dueDate: new Date(today.getFullYear(), today.getMonth(), 10).toISOString().split('T')[0],
+                        recurring: true,
+                        frequency: "monthly",
+                        status: "pending",
+                        category: "housing"
+                    }
+                ];
+                saveData();
             }
         }
 
@@ -531,6 +772,7 @@
         // Initialize
         loadData();
         updateCurrentDate();
+        renderCalendar();
         updateAllDisplays();
 
         function updateCurrentDate() {
@@ -544,8 +786,133 @@
             document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
             
             document.getElementById(tabName + '-tab').style.display = 'block';
-            event.target.classList.add('active');
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
             updateAllDisplays();
+        }
+
+        // Calendar Functions
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            document.getElementById('calendarTitle').textContent = 
+                new Date(year, month).toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+            
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const daysInPrevMonth = new Date(year, month, 0).getDate();
+            
+            let calendarHTML = '';
+            
+            // Day headers
+            const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+            dayNames.forEach(day => {
+                calendarHTML += `<div class="calendar-day-header">${day}</div>`;
+            });
+            
+            // Previous month days
+            for (let i = firstDay - 1; i >= 0; i--) {
+                const day = daysInPrevMonth - i;
+                calendarHTML += `<div class="calendar-day other-month" onclick="selectDate(${year}, ${month - 1}, ${day})">
+                    <div class="day-number">${day}</div>
+                </div>`;
+            }
+            
+            // Current month days
+            const today = new Date();
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const isToday = today.getFullYear() === year && 
+                               today.getMonth() === month && 
+                               today.getDate() === day;
+                const isSelected = selectedDate.getFullYear() === year && 
+                                  selectedDate.getMonth() === month && 
+                                  selectedDate.getDate() === day;
+                
+                const dayEvents = appData.events.filter(e => e.date === dateStr);
+                const hasEvents = dayEvents.length > 0;
+                
+                let dayClass = 'calendar-day';
+                if (isToday) dayClass += ' today';
+                if (hasEvents) dayClass += ' has-events';
+                
+                calendarHTML += `<div class="${dayClass}" onclick="selectDate(${year}, ${month}, ${day})">
+                    <div class="day-number">${day}</div>
+                    ${hasEvents ? `<div class="event-dots">
+                        ${dayEvents.map(e => `<div class="event-dot ${e.type}"></div>`).join('')}
+                    </div>` : ''}
+                </div>`;
+            }
+            
+            // Next month days
+            const remainingDays = 42 - (firstDay + daysInMonth); // 6 rows of 7
+            for (let day = 1; day <= remainingDays; day++) {
+                calendarHTML += `<div class="calendar-day other-month" onclick="selectDate(${year}, ${month + 1}, ${day})">
+                    <div class="day-number">${day}</div>
+                </div>`;
+            }
+            
+            document.getElementById('calendarDays').innerHTML = calendarHTML;
+            updateSelectedDayEvents();
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function goToToday() {
+            currentDate = new Date();
+            selectedDate = new Date();
+            renderCalendar();
+        }
+
+        function selectDate(year, month, day) {
+            selectedDate = new Date(year, month, day);
+            document.getElementById('eventDate').value = selectedDate.toISOString().split('T')[0];
+            renderCalendar();
+        }
+
+        function updateSelectedDayEvents() {
+            const dateStr = selectedDate.toISOString().split('T')[0];
+            const dayEvents = appData.events.filter(e => e.date === dateStr);
+            
+            const container = document.getElementById('selectedDayEvents');
+            if (dayEvents.length === 0) {
+                container.innerHTML = '<p style="text-align: center; opacity: 0.7;">Nenhum compromisso neste dia</p>';
+                return;
+            }
+            
+            container.innerHTML = dayEvents.map(event => `
+                <div class="item">
+                    <div class="item-header">
+                        <span class="item-title">${event.title}</span>
+                        <span class="badge badge-info">${getEventTypeText(event.type)}</span>
+                    </div>
+                    <div class="item-date">
+                        🕐 ${event.time || 'Dia todo'}
+                    </div>
+                    ${event.description ? `<p>${event.description}</p>` : ''}
+                    <div class="actions">
+                        <button class="btn btn-danger" onclick="deleteEvent(${event.id})" style="padding: 5px 10px; font-size: 0.8em;">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getEventTypeText(type) {
+            const types = {
+                meeting: 'Reunião',
+                personal: 'Pessoal',
+                health: 'Saúde',
+                other: 'Outro'
+            };
+            return types[type] || type;
         }
 
         // Events Management
@@ -554,6 +921,7 @@
             const date = document.getElementById('eventDate').value;
             const time = document.getElementById('eventTime').value;
             const type = document.getElementById('eventType').value;
+            const description = document.getElementById('eventDescription').value;
 
             if (!title || !date) {
                 alert('Preencha o título e data do compromisso!');
@@ -566,22 +934,28 @@
                 date,
                 time,
                 type,
+                description,
                 created: new Date().toISOString()
             });
 
             saveData();
             clearEventForm();
+            renderCalendar();
         }
 
         function deleteEvent(id) {
-            appData.events = appData.events.filter(e => e.id !== id);
-            saveData();
+            if (confirm('Tem certeza que deseja excluir este compromisso?')) {
+                appData.events = appData.events.filter(e => e.id !== id);
+                saveData();
+                renderCalendar();
+            }
         }
 
         function clearEventForm() {
             document.getElementById('eventTitle').value = '';
             document.getElementById('eventDate').value = '';
             document.getElementById('eventTime').value = '';
+            document.getElementById('eventDescription').value = '';
         }
 
         // Bills Management
@@ -592,6 +966,7 @@
             const recurring = document.getElementById('billRecurring').checked;
             const frequency = document.getElementById('recurringFrequency').value;
             const status = document.getElementById('billStatus').value;
+            const category = document.getElementById('billCategory').value;
 
             if (!description || !amount || !dueDate) {
                 alert('Preencha todos os campos da conta!');
@@ -606,6 +981,7 @@
                 recurring,
                 frequency: recurring ? frequency : null,
                 status,
+                category,
                 created: new Date().toISOString()
             });
 
@@ -614,8 +990,18 @@
         }
 
         function deleteBill(id) {
-            appData.bills = appData.bills.filter(b => b.id !== id);
-            saveData();
+            if (confirm('Tem certeza que deseja excluir esta conta?')) {
+                appData.bills = appData.bills.filter(b => b.id !== id);
+                saveData();
+            }
+        }
+
+        function markBillAsPaid(id) {
+            const bill = appData.bills.find(b => b.id === id);
+            if (bill) {
+                bill.status = bill.status === 'paid' ? 'pending' : 'paid';
+                saveData();
+            }
         }
 
         function clearBillForm() {
@@ -633,39 +1019,33 @@
             }
 
             const lastBill = appData.bills[appData.bills.length - 1];
-            const receiptHTML = `
-                <div style="text-align: center;">
-                    <h3>RECIBO DE PAGAMENTO</h3>
-                    <p><strong>Nº ${lastBill.id}</strong></p>
-                </div>
-                <p><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
-                <p><strong>Descrição:</strong> ${lastBill.description}</p>
-                <p><strong>Valor:</strong> R$ ${lastBill.amount.toFixed(2)}</p>
-                <p><strong>Vencimento:</strong> ${new Date(lastBill.dueDate).toLocaleDateString('pt-BR')}</p>
-                <p><strong>Status:</strong> ${lastBill.status === 'paid' ? 'PAGO ✓' : 'PENDENTE'}</p>
-                ${lastBill.recurring ? `<p><strong>Recorrente:</strong> Sim (${lastBill.frequency})</p>` : ''}
-                <div style="margin-top: 30px; text-align: center;">
-                    <p>_______________________________</p>
-                    <p>Assinatura</p>
+            const receiptModal = document.createElement('div');
+            receiptModal.className = 'modal';
+            receiptModal.style.display = 'flex';
+            receiptModal.innerHTML = `
+                <div class="modal-content">
+                    <h2>🧾 Recibo</h2>
+                    <div class="receipt">
+                        <h3>RECIBO DE PAGAMENTO</h3>
+                        <p><strong>Nº:</strong> ${lastBill.id}</p>
+                        <p><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Descrição:</strong> ${lastBill.description}</p>
+                        <p><strong>Valor:</strong> R$ ${lastBill.amount.toFixed(2)}</p>
+                        <p><strong>Vencimento:</strong> ${new Date(lastBill.dueDate).toLocaleDateString('pt-BR')}</p>
+                        <p><strong>Status:</strong> ${lastBill.status === 'paid' ? 'PAGO ✓' : 'PENDENTE'}</p>
+                        ${lastBill.recurring ? `<p><strong>Recorrente:</strong> ${lastBill.frequency}</p>` : ''}
+                        <div style="margin-top: 30px; text-align: center;">
+                            <p>_______________________________</p>
+                            <p>Assinatura</p>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="this.closest('.modal').remove()">Fechar</button>
                 </div>
             `;
-
-            document.getElementById('receiptContent').innerHTML = receiptHTML;
-            document.getElementById('receiptModal').style.display = 'flex';
-        }
-
-        function printReceipt() {
-            const receipt = document.getElementById('receiptContent').innerHTML;
-            const printWindow = window.open('', '', 'width=600,height=600');
-            printWindow.document.write('<html><head><title>Recibo</title></head><body>');
-            printWindow.document.write(receipt);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+            document.body.appendChild(receiptModal);
+            receiptModal.addEventListener('click', function(e) {
+                if (e.target === receiptModal) receiptModal.remove();
+            });
         }
 
         // Projects Management
@@ -676,7 +1056,7 @@
             const end = document.getElementById('projectEnd').value;
             const status = document.getElementById('projectStatus').value;
             const priority = document.getElementById('projectPriority').value;
-            const tasks = document.getElementById('projectTasks').value.split(',').map(t => t.trim());
+            const tasks = document.getElementById('projectTasks').value.split(',').map(t => t.trim()).filter(t => t);
 
             if (!name) {
                 alert('Nome do projeto é obrigatório!');
@@ -700,8 +1080,10 @@
         }
 
         function deleteProject(id) {
-            appData.projects = appData.projects.filter(p => p.id !== id);
-            saveData();
+            if (confirm('Tem certeza que deseja excluir este projeto?')) {
+                appData.projects = appData.projects.filter(p => p.id !== id);
+                saveData();
+            }
         }
 
         function clearProjectForm() {
@@ -714,33 +1096,17 @@
 
         // Update Displays
         function updateAllDisplays() {
-            updateEventsDisplay();
             updateBillsDisplay();
             updateProjectsDisplay();
-            updateDataPreview();
-        }
-
-        function updateEventsDisplay() {
-            const container = document.getElementById('eventsList');
-            container.innerHTML = appData.events.map(event => `
-                <div class="item">
-                    <div class="item-header">
-                        <span class="item-title">${event.title}</span>
-                        <span class="badge badge-info">${event.type}</span>
-                    </div>
-                    <div class="item-date">
-                        📅 ${new Date(event.date).toLocaleDateString('pt-BR')} ${event.time ? 'às ' + event.time : ''}
-                    </div>
-                    <div class="actions">
-                        <button class="btn btn-danger" onclick="deleteEvent(${event.id})" style="padding: 5px 10px; font-size: 0.8em;">Excluir</button>
-                    </div>
-                </div>
-            `).join('') || '<p style="text-align: center; opacity: 0.7;">Nenhum compromisso adicionado</p>';
+            updateFinancialSummary();
+            updateSelectedDayEvents();
         }
 
         function updateBillsDisplay() {
             const container = document.getElementById('billsList');
-            container.innerHTML = appData.bills.map(bill => `
+            const bills = appData.bills.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+            
+            container.innerHTML = bills.map(bill => `
                 <div class="item">
                     <div class="item-header">
                         <span class="item-title">${bill.description}</span>
@@ -751,9 +1117,13 @@
                     <div>💰 R$ ${bill.amount.toFixed(2)}</div>
                     <div class="item-date">📅 Vence: ${new Date(bill.dueDate).toLocaleDateString('pt-BR')}</div>
                     ${bill.recurring ? `<div>🔄 Recorrente (${bill.frequency})</div>` : ''}
+                    <div>📂 ${getCategoryText(bill.category)}</div>
                     <div class="actions">
                         <button class="btn btn-success" onclick="markBillAsPaid(${bill.id})" style="padding: 5px 10px; font-size: 0.8em;">
                             ${bill.status === 'paid' ? 'Desmarcar' : 'Pagar'}
+                        </button>
+                        <button class="btn btn-warning" onclick="selectBillForReceipt(${bill.id})" style="padding: 5px 10px; font-size: 0.8em;">
+                            Recibo
                         </button>
                         <button class="btn btn-danger" onclick="deleteBill(${bill.id})" style="padding: 5px 10px; font-size: 0.8em;">Excluir</button>
                     </div>
@@ -761,12 +1131,79 @@
             `).join('') || '<p style="text-align: center; opacity: 0.7;">Nenhuma conta adicionada</p>';
         }
 
-        function markBillAsPaid(id) {
+        function getCategoryText(category) {
+            const categories = {
+                housing: 'Moradia',
+                utilities: 'Serviços',
+                food: 'Alimentação',
+                transport: 'Transporte',
+                health: 'Saúde',
+                education: 'Educação',
+                leisure: 'Lazer',
+                other: 'Outros'
+            };
+            return categories[category] || category;
+        }
+
+        function selectBillForReceipt(id) {
             const bill = appData.bills.find(b => b.id === id);
             if (bill) {
-                bill.status = bill.status === 'paid' ? 'pending' : 'paid';
-                saveData();
+                const receiptModal = document.createElement('div');
+                receiptModal.className = 'modal';
+                receiptModal.style.display = 'flex';
+                receiptModal.innerHTML = `
+                    <div class="modal-content">
+                        <h2>🧾 Recibo</h2>
+                        <div class="receipt">
+                            <h3>RECIBO DE PAGAMENTO</h3>
+                            <p><strong>Nº:</strong> ${bill.id}</p>
+                            <p><strong>Data:</strong> ${new Date().toLocaleDateString('pt-BR')}</p>
+                            <p><strong>Descrição:</strong> ${bill.description}</p>
+                            <p><strong>Valor:</strong> R$ ${bill.amount.toFixed(2)}</p>
+                            <p><strong>Vencimento:</strong> ${new Date(bill.dueDate).toLocaleDateString('pt-BR')}</p>
+                            <p><strong>Status:</strong> ${bill.status === 'paid' ? 'PAGO ✓' : 'PENDENTE'}</p>
+                            <div style="margin-top: 30px; text-align: center;">
+                                <p>_______________________________</p>
+                                <p>Assinatura</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="this.closest('.modal').remove()">Fechar</button>
+                    </div>
+                `;
+                document.body.appendChild(receiptModal);
+                receiptModal.addEventListener('click', function(e) {
+                    if (e.target === receiptModal) receiptModal.remove();
+                });
             }
+        }
+
+        function updateFinancialSummary() {
+            const totalPending = appData.bills
+                .filter(b => b.status === 'pending')
+                .reduce((sum, b) => sum + b.amount, 0);
+            
+            const totalPaid = appData.bills
+                .filter(b => b.status === 'paid')
+                .reduce((sum, b) => sum + b.amount, 0);
+            
+            const total = totalPending + totalPaid;
+            
+            document.getElementById('financialSummary').innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center;">
+                    <div style="background: rgba(231, 76, 60, 0.2); padding: 15px; border-radius: 10px;">
+                        <h3 style="color: #e74c3c;">Pendente</h3>
+                        <p style="font-size: 1.3em; font-weight: bold;">R$ ${totalPending.toFixed(2)}</p>
+                    </div>
+                    <div style="background: rgba(0, 184, 148, 0.2); padding: 15px; border-radius: 10px;">
+                        <h3 style="color: #00b894;">Pago</h3>
+                        <p style="font-size: 1.3em; font-weight: bold;">R$ ${totalPaid.toFixed(2)}</p>
+                    </div>
+                    <div style="background: rgba(108, 92, 231, 0.2); padding: 15px; border-radius: 10px;">
+                        <h3 style="color: #a8e6cf;">Total</h3>
+                        <p style="font-size: 1.3em; font-weight: bold;">R$ ${total.toFixed(2)}</p>
+                    </div>
+                </div>
+            `;
         }
 
         function updateProjectsDisplay() {
@@ -775,11 +1212,11 @@
                 <div class="item">
                     <div class="item-header">
                         <span class="item-title">${project.name}</span>
-                        <span class="badge badge-${getPriorityColor(project.priority)}">${project.priority}</span>
+                        <span class="badge badge-${getPriorityColor(project.priority)}">${getPriorityText(project.priority)}</span>
                     </div>
                     <p>${project.description || 'Sem descrição'}</p>
-                    <div>📅 ${new Date(project.start).toLocaleDateString('pt-BR')} - ${new Date(project.end).toLocaleDateString('pt-BR')}</div>
-                    <div>📋 Tarefas: ${project.tasks.join(', ') || 'Nenhuma'}</div>
+                    <div>📅 ${project.start ? new Date(project.start).toLocaleDateString('pt-BR') : 'Não definido'} - ${project.end ? new Date(project.end).toLocaleDateString('pt-BR') : 'Não definido'}</div>
+                    <div>📋 Tarefas: ${project.tasks.length > 0 ? project.tasks.join(', ') : 'Nenhuma'}</div>
                     <div>Status: ${getStatusText(project.status)}</div>
                     <div class="actions">
                         <button class="btn btn-danger" onclick="deleteProject(${project.id})" style="padding: 5px 10px; font-size: 0.8em;">Excluir</button>
@@ -798,6 +1235,16 @@
             return colors[priority] || 'info';
         }
 
+        function getPriorityText(priority) {
+            const texts = {
+                low: 'Baixa',
+                medium: 'Média',
+                high: 'Alta',
+                urgent: 'Urgente'
+            };
+            return texts[priority] || priority;
+        }
+
         function getStatusText(status) {
             const texts = {
                 planning: '📝 Planejamento',
@@ -808,126 +1255,239 @@
             return texts[status] || status;
         }
 
-        function updateDataPreview() {
-            document.getElementById('dataPreview').textContent = JSON.stringify(appData, null, 2);
-        }
-
         // Export Functions
         function exportToWord() {
             let content = `
-                <html>
+                <html xmlns:o="urn:schemas-microsoft-com:office:office" 
+                      xmlns:w="urn:schemas-microsoft-com:office:word" 
+                      xmlns="http://www.w3.org/TR/REC-html40">
                 <head>
                     <meta charset="UTF-8">
+                    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                    <!--[if gte mso 9]><xml>
+                        <w:WordDocument>
+                            <w:View>Print</w:View>
+                            <w:Zoom>100</w:Zoom>
+                            <w:DoNotOptimizeForBrowser/>
+                        </w:WordDocument>
+                    </xml><![endif]-->
                     <style>
-                        body { font-family: Arial, sans-serif; }
-                        h1 { color: #6c5ce7; }
-                        h2 { color: #a8e6cf; }
-                        .section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+                        @page {
+                            size: A4;
+                            margin: 2cm;
+                        }
+                        body { 
+                            font-family: 'Calibri', 'Arial', sans-serif; 
+                            color: #333;
+                            line-height: 1.6;
+                        }
+                        h1 { 
+                            color: #6c5ce7; 
+                            border-bottom: 3px solid #6c5ce7;
+                            padding-bottom: 10px;
+                        }
+                        h2 { 
+                            color: #a8e6cf; 
+                            background: #2d3436;
+                            padding: 10px;
+                            border-radius: 5px;
+                        }
+                        .section { 
+                            margin: 20px 0; 
+                            padding: 15px; 
+                            border: 1px solid #ddd;
+                            border-radius: 8px;
+                            page-break-inside: avoid;
+                        }
+                        .event, .bill, .project {
+                            margin: 10px 0;
+                            padding: 10px;
+                            background: #f5f5f5;
+                            border-left: 4px solid #6c5ce7;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin: 15px 0;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 8px;
+                            text-align: left;
+                        }
+                        th {
+                            background: #6c5ce7;
+                            color: white;
+                        }
+                        .print-button {
+                            display: none;
+                        }
                     </style>
                 </head>
                 <body>
-                    <h1>Agenda Pro Tech - Exportação</h1>
-                    <p>Data: ${new Date().toLocaleDateString('pt-BR')}</p>
+                    <h1>📅 Agenda Pro Tech - Relatório Completo</h1>
+                    <p><strong>Data de exportação:</strong> ${new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                    <p><strong>Hora:</strong> ${new Date().toLocaleTimeString('pt-BR')}</p>
                     
                     <h2>📅 Compromissos</h2>
-                    ${appData.events.map(e => `
-                        <div class="section">
-                            <p><strong>${e.title}</strong></p>
-                            <p>Data: ${new Date(e.date).toLocaleDateString('pt-BR')} ${e.time || ''}</p>
-                            <p>Tipo: ${e.type}</p>
-                        </div>
-                    `).join('')}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Hora</th>
+                                <th>Título</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${appData.events.sort((a, b) => new Date(a.date) - new Date(b.date)).map(e => `
+                                <tr>
+                                    <td>${new Date(e.date + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                                    <td>${e.time || 'Dia todo'}</td>
+                                    <td><strong>${e.title}</strong></td>
+                                    <td>${getEventTypeText(e.type)}</td>
+                                    <td>${e.description || '-'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
                     
-                    <h2>💰 Contas</h2>
-                    ${appData.bills.map(b => `
-                        <div class="section">
-                            <p><strong>${b.description}</strong></p>
-                            <p>Valor: R$ ${b.amount.toFixed(2)}</p>
-                            <p>Vencimento: ${new Date(b.dueDate).toLocaleDateString('pt-BR')}</p>
-                            <p>Status: ${b.status}</p>
-                        </div>
-                    `).join('')}
+                    <h2>💰 Contas e Finanças</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Vencimento</th>
+                                <th>Status</th>
+                                <th>Categoria</th>
+                                <th>Recorrente</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${appData.bills.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate)).map(b => `
+                                <tr>
+                                    <td><strong>${b.description}</strong></td>
+                                    <td>R$ ${b.amount.toFixed(2)}</td>
+                                    <td>${new Date(b.dueDate + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+                                    <td>${b.status === 'paid' ? '✅ Pago' : '⚠️ Pendente'}</td>
+                                    <td>${getCategoryText(b.category)}</td>
+                                    <td>${b.recurring ? `Sim (${b.frequency})` : 'Não'}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 30px;">
+                        <p><strong>Total Pendente:</strong> R$ ${appData.bills.filter(b => b.status === 'pending').reduce((sum, b) => sum + b.amount, 0).toFixed(2)}</p>
+                        <p><strong>Total Pago:</strong> R$ ${appData.bills.filter(b => b.status === 'paid').reduce((sum, b) => sum + b.amount, 0).toFixed(2)}</p>
+                    </div>
                     
                     <h2>🚀 Projetos</h2>
                     ${appData.projects.map(p => `
-                        <div class="section">
-                            <p><strong>${p.name}</strong></p>
-                            <p>${p.description}</p>
-                            <p>Tarefas: ${p.tasks.join(', ')}</p>
-                            <p>Status: ${p.status}</p>
+                        <div class="project">
+                            <h3>${p.name}</h3>
+                            <p><strong>Status:</strong> ${getStatusText(p.status)}</p>
+                            <p><strong>Prioridade:</strong> ${getPriorityText(p.priority)}</p>
+                            <p><strong>Período:</strong> ${p.start ? new Date(p.start + 'T00:00:00').toLocaleDateString('pt-BR') : 'Não definido'} - ${p.end ? new Date(p.end + 'T00:00:00').toLocaleDateString('pt-BR') : 'Não definido'}</p>
+                            <p><strong>Descrição:</strong> ${p.description || 'Sem descrição'}</p>
+                            <p><strong>Tarefas:</strong> ${p.tasks.length > 0 ? p.tasks.join(', ') : 'Nenhuma tarefa'}</p>
                         </div>
-                    `).join('')}
+                    `).join('') || '<p>Nenhum projeto cadastrado</p>'}
+                    
+                    <div style="margin-top: 50px; text-align: center; color: #999; font-size: 0.9em;">
+                        <p>Gerado por Agenda Pro Tech - ${new Date().getFullYear()}</p>
+                    </div>
                 </body>
                 </html>
             `;
 
-            const blob = new Blob([content], { type: 'application/msword' });
+            const blob = new Blob(['\ufeff' + content], { 
+                type: 'application/msword;charset=utf-8' 
+            });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'agenda_pro_' + new Date().toISOString().split('T')[0] + '.doc';
-            a.click();
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Agenda_Pro_${new Date().toISOString().split('T')[0]}.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            alert('✅ Documento Word gerado com sucesso! Verifique sua pasta de downloads.');
         }
 
-        async function exportToPDF() {
+        function exportToPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             
-            doc.setFontSize(20);
+            // Title
+            doc.setFontSize(22);
+            doc.setTextColor(108, 92, 231);
             doc.text('Agenda Pro Tech', 20, 20);
-            doc.setFontSize(12);
-            doc.text('Data: ' + new Date().toLocaleDateString('pt-BR'), 20, 30);
             
-            let y = 50;
+            doc.setFontSize(12);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Exportado em: ${new Date().toLocaleDateString('pt-BR')}`, 20, 30);
+            
+            let y = 45;
             
             // Events
-            doc.setFontSize(16);
+            doc.setFontSize(18);
+            doc.setTextColor(168, 230, 207);
             doc.text('Compromissos', 20, y);
             y += 10;
             
-            appData.events.forEach(e => {
-                doc.setFontSize(12);
-                doc.text(`${e.title} - ${new Date(e.date).toLocaleDateString('pt-BR')}`, 30, y);
-                y += 10;
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
+            appData.events.sort((a, b) => new Date(a.date) - new Date(b.date)).forEach(e => {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+                doc.text(`${new Date(e.date + 'T00:00:00').toLocaleDateString('pt-BR')} - ${e.title}`, 25, y);
+                y += 7;
             });
             
             y += 10;
             
             // Bills
-            doc.setFontSize(16);
+            doc.setFontSize(18);
+            doc.setTextColor(168, 230, 207);
             doc.text('Contas', 20, y);
             y += 10;
             
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            
             appData.bills.forEach(b => {
-                doc.setFontSize(12);
-                doc.text(`${b.description} - R$ ${b.amount.toFixed(2)}`, 30, y);
-                y += 10;
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+                doc.text(`${b.description} - R$ ${b.amount.toFixed(2)} - ${b.status}`, 25, y);
+                y += 7;
             });
             
-            y += 10;
-            
-            // Projects
-            doc.setFontSize(16);
-            doc.text('Projetos', 20, y);
-            y += 10;
-            
-            appData.projects.forEach(p => {
-                doc.setFontSize(12);
-                doc.text(`${p.name} - ${p.status}`, 30, y);
-                y += 10;
-            });
-            
-            doc.save('agenda_pro_' + new Date().toISOString().split('T')[0] + '.pdf');
+            // Save
+            doc.save(`Agenda_Pro_${new Date().toISOString().split('T')[0]}.pdf`);
+            alert('✅ PDF gerado com sucesso!');
         }
 
         function backupData() {
-            const dataStr = JSON.stringify(appData);
+            const dataStr = JSON.stringify(appData, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'backup_agenda_' + new Date().toISOString().split('T')[0] + '.json';
-            a.click();
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `backup_agenda_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            alert('✅ Backup criado com sucesso!');
         }
 
         function restoreData() {
@@ -941,11 +1501,16 @@
                 reader.onload = function(e) {
                     try {
                         const data = JSON.parse(e.target.result);
-                        appData = data;
-                        saveData();
-                        alert('Backup restaurado com sucesso!');
+                        if (data.events && data.bills && data.projects) {
+                            appData = data;
+                            saveData();
+                            renderCalendar();
+                            alert('✅ Backup restaurado com sucesso!');
+                        } else {
+                            alert('❌ Arquivo de backup inválido!');
+                        }
                     } catch (error) {
-                        alert('Erro ao carregar backup. Arquivo inválido.');
+                        alert('❌ Erro ao carregar backup. Arquivo corrompido.');
                     }
                 };
                 reader.readAsText(file);
@@ -957,26 +1522,21 @@
             document.getElementById('recurringOptions').style.display = this.checked ? 'block' : 'none';
         });
 
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-            }
-        }
-
-        // Service Worker for PWA (Mobile Installation)
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').then(registration => {
-                    console.log('ServiceWorker registration successful');
-                }).catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-            });
-        }
+        // Initialize date input with today's date
+        document.getElementById('eventDate').value = new Date().toISOString().split('T')[0];
+        document.getElementById('billDueDate').value = new Date().toISOString().split('T')[0];
 
         // Auto-save periodically
         setInterval(saveData, 30000);
+
+        // Update time every minute
+        setInterval(updateCurrentDate, 60000);
+
+        console.log('✅ Agenda Pro Tech carregada com sucesso!');
+        console.log('📅 Calendário interativo pronto');
+        console.log('💰 Gestão financeira ativa');
+        console.log('🚀 Projetos configurados');
+        console.log('📥 Exportação Word/PDF disponível');
     </script>
 </body>
 </html>
